@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <!-- ul -->
+    <ul id="messages"></ul>
+
+    <!-- Form -->
+    <form>
+        <input type="text" id="name" placeholder="Your Name">
+        <input type="text" id="text_box"><button>Send </button>
+    </form>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      var username = '';
+
+
+       $('form').submit(function(){
+        username = $('#name').val();
+        socket.emit('newMessage',username +' '+$('#text_box').val());
+         $('#text_box').val('');
+         return false;
+       });
+
+       socket.on('newMessage',function(msg){
+         $('#messages').append($('<li>').text(msg + ' ' + Date())); 
+       });
+    </script>
+
+    <!--CSS-->
+    <style>
+      li:nth-child(even){
+          background:#333;
+          color:white;
+      }
+      li{
+          padding: 5px;
+      }
+      form{
+          position: absolute;
+          bottom: 0px;  
+          width:100%;
+          background: grey;
+          padding:20px;
+      }
+       #text_box{
+       float:left;
+       width:30%;
+       height:30px;
+       margin: 5px;
+       border:none;
+      }
+
+      #name{
+       float:left;
+       margin:5px;
+       width:20%;
+       height:30px;
+       border:none;
+      }
+
+      button{
+          margin: 5px;
+          float:left;
+          width:20%;
+          height:33px;
+      }
+    </style>
+</body>
+</html>
